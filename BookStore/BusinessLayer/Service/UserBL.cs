@@ -49,7 +49,7 @@ namespace BusinessLayer.Service
                 throw e;
             }
         }
-        void IUserBL.resetPassword(string EmailId, string Password)
+        public void resetPassword(string EmailId, string Password)
         {
             try
             {

@@ -7,20 +7,20 @@ using System.Text;
 
 namespace BusinessLayer.Service
 {
-    public class BookBL:IBookBL
+    public class AddressBL:IAddressBL
     {
-        IBookRL bookRL;
-        public BookBL(IBookRL bookRL)
+        IAddressRL addressRL;
+
+        public AddressBL(IAddressRL addressRL)
         {
-            this.bookRL = bookRL;
+            this.addressRL = addressRL;
         }
 
-        public string AddBooks(BookModel addBook)
+        public string AddAddress(AddressModel addressModel)
         {
             try
             {
-                return bookRL.AddBooks(addBook);
-
+                return this.addressRL.AddAddress(addressModel);
             }
             catch (Exception e)
             {
@@ -28,44 +28,47 @@ namespace BusinessLayer.Service
             }
         }
 
-        public List<BookModel> GetAllBookModels()
+        public string DeleteAddress(int AddressId)
         {
             try
             {
-                return this.bookRL.GetAllBookModels();
+                return this.addressRL.DeleteAddress(AddressId);
             }
             catch (Exception e)
             {
                 throw e;
             }
         }
-        public BookModel GetBookModel(int? id)
+
+        public List<AddressModel> GetAddressById(int id)
         {
             try
             {
-                return this.bookRL.GetBookModel(id);
+                return this.addressRL.GetAddressById(id);
             }
             catch (Exception e)
             {
                 throw e;
             }
         }
-        public void updateBook(BookModel bookModel)
+
+        public List<AddressModel> GetAllAddress()
         {
             try
             {
-                bookRL.updateBook(bookModel);
+                return this.addressRL.GetAllAddress();
             }
             catch (Exception e)
             {
                 throw e;
             }
         }
-        public void deleteBook(BookModel bookModel)
+
+        public string UpdateAddress(AddressModel addressModel)
         {
             try
             {
-                this.bookRL.deleteBook(bookModel);
+                return this.addressRL.UpdateAddress(addressModel);
             }
             catch (Exception e)
             {

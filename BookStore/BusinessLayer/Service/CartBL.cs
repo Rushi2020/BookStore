@@ -7,20 +7,42 @@ using System.Text;
 
 namespace BusinessLayer.Service
 {
-    public class BookBL:IBookBL
+    public class CartBL:ICartBL
     {
-        IBookRL bookRL;
-        public BookBL(IBookRL bookRL)
+        ICartRL cartRL;
+
+        public CartBL(ICartRL cartRL)
         {
-            this.bookRL = bookRL;
+            this.cartRL = cartRL;
         }
 
-        public string AddBooks(BookModel addBook)
+        public string AddBookToCart(CartModel cartModel)
         {
             try
             {
-                return bookRL.AddBooks(addBook);
-
+                return this.cartRL.AddBookToCart(cartModel);
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+        public string UpdateCart(int CartId, int OrderQuantity)
+        {
+            try
+            {
+                return this.cartRL.UpdateCart(CartId, OrderQuantity);
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+        public List<GetCartModel> GetCartData(int Id)
+        {
+            try
+            {
+                return this.cartRL.GetCartData(Id);
             }
             catch (Exception e)
             {
@@ -28,44 +50,11 @@ namespace BusinessLayer.Service
             }
         }
 
-        public List<BookModel> GetAllBookModels()
+        public string DeleteCart(int CartId)
         {
             try
             {
-                return this.bookRL.GetAllBookModels();
-            }
-            catch (Exception e)
-            {
-                throw e;
-            }
-        }
-        public BookModel GetBookModel(int? id)
-        {
-            try
-            {
-                return this.bookRL.GetBookModel(id);
-            }
-            catch (Exception e)
-            {
-                throw e;
-            }
-        }
-        public void updateBook(BookModel bookModel)
-        {
-            try
-            {
-                bookRL.updateBook(bookModel);
-            }
-            catch (Exception e)
-            {
-                throw e;
-            }
-        }
-        public void deleteBook(BookModel bookModel)
-        {
-            try
-            {
-                this.bookRL.deleteBook(bookModel);
+                return this.cartRL.DeleteCart(CartId);
             }
             catch (Exception e)
             {

@@ -22,9 +22,10 @@ namespace RepositoryLayer.Service
                 msgObj.To.Add(email);
                 msgObj.From = new MailAddress("arunj9816@gmail.com");
                 msgObj.Subject = "Password Reset Link";
-                msgObj.Body = $"http://localhost:4200/resetPassword/{token}";
+                msgObj.Body = $"http://localhost:4200/resetpassword{token}";
                 client.Send(msgObj);
             }
         }
     }
 }
+

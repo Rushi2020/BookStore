@@ -45,7 +45,7 @@ namespace BookStore.Controllers
                 string result = this.userBL.userLogin(loginModel);
                 if (result != null)
                 {
-                    return this.Ok(new { success = true, message = $"LogIn Successful {loginModel.EmailId}, data = {result}" });
+                    return this.Ok(new { success = true, message = $"{result}" });
                 }
                 else
                 {
@@ -82,21 +82,26 @@ namespace BookStore.Controllers
 
         [Authorize]
         [HttpPut("resetpassword")]
-        public ActionResult ResetPassword(string password)
+        public ActionResult resetPassword(string password)
         {
             try
             {
-                var userEmail = User.FindFirst("EmailId").Value.ToString();
-                if (userEmail != null)
+                var identity = User.Identity as ClaimsIdentity;
+                if (identity != null)
                 {
-                    this.userBL.resetPassword(userEmail, password);
-
-                    return Ok(new { Success = true, message = "Password reset successfully" });
+                    IEnumerable<Claim> claims = identity.Claims;
+                    var UserEmailObject = claims.FirstOrDefault()?.Value;
+                    if (UserEmailObject != null)
+                    {
+                        this.userBL.resetPassword(UserEmailObject, password);
+                        return Ok(new { success = true, message = "Password Changed Sucessfully" });
+                    }
+                    else
+                    {
+                        return this.BadRequest(new { success = false, message = $"Email is not Authorized" });
+                    }
                 }
-                else
-                {
-                    return BadRequest(new { Success = false, message = "Password reset Unsuccesfully" });
-                }
+                return this.BadRequest(new { success = false, message = $"Password not changed Successfully" });
             }
             catch (Exception e)
             {
