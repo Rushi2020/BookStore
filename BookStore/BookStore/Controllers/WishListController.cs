@@ -1,8 +1,10 @@
 ﻿using BusinessLayer.Interface;
 using DatabaseLayer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Linq;
 
 namespace BookStore.Controllers
 {
@@ -17,12 +19,15 @@ namespace BookStore.Controllers
             this.wishlistBL = wishlistBL;
         }
 
+        [Authorize(Roles = Role.User)]
         [HttpPost("AddWishlist")]
         public ActionResult AddBookToWishlist(WishListModel wishListModel)
         {
             try
             {
-                string result = this.wishlistBL.AddBookToWishlist(wishListModel);
+                int id = Convert.ToInt32(User.Claims.FirstOrDefault(e => e.Type == "userId").Value);
+
+                string result = this.wishlistBL.AddBookToWishlist(wishListModel ,id);
                 if (result.Equals("Book added to WishList successfully"))
                 {
                     return this.Ok(new { success = true, message = result });
@@ -59,11 +64,13 @@ namespace BookStore.Controllers
             }
         }
 
+        [Authorize(Roles = Role.User)]
         [HttpGet]
-        public ActionResult GetWishlistData(int id)
+        public ActionResult GetWishlistData()
         {
             try
             {
+                int id = Convert.ToInt32(User.Claims.FirstOrDefault(e => e.Type == "userId").Value);
                 var result = this.wishlistBL.GetWishListData(id);
                 if (result != null)
                 {

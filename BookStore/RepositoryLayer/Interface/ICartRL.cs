@@ -7,7 +7,7 @@ namespace RepositoryLayer.Interface
 {
     public interface ICartRL
     {
-        string AddBookToCart(CartModel cartModel);
+        string AddBookToCart(CartModel cartModel,int id);
         string UpdateCart(int CartId, int OrderQuantity);
         List<GetCartModel> GetCartData(int Id);
         string DeleteCart(int CartId);

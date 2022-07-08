@@ -16,11 +16,11 @@ namespace BusinessLayer.Service
             this.wishListRL = wishlistRL;
         }
 
-        public string AddBookToWishlist(WishListModel wishListModel)
+        public string AddBookToWishlist(WishListModel wishListModel, int id)
         {
             try
             {
-                return this.wishListRL.AddBookToWishlist(wishListModel);
+                return this.wishListRL.AddBookToWishlist(wishListModel, id);
             }
             catch (Exception e)
             {

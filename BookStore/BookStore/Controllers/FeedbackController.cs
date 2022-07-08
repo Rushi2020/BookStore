@@ -1,8 +1,10 @@
 ﻿using BusinessLayer.Interface;
 using DatabaseLayer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Linq;
 
 namespace BookStore.Controllers
 {
@@ -17,28 +19,31 @@ namespace BookStore.Controllers
             this.feedbackBL = feedbackBL;
         }
 
-        [HttpPost("Add Feedback")]
+        [Authorize(Roles = Role.User)]
+        [HttpPost("AddFeedback")]
         public ActionResult AddFeedback(FeedbackModel feedbackModel)
         {
             try
             {
-                string result = this.feedbackBL.AddFeedback(feedbackModel);
-                if (result.Equals("Success:- Your Feedback is added Successfully"))
+                int id = Convert.ToInt32(User.Claims.FirstOrDefault(e => e.Type == "userId").Value);
+                var result = this.feedbackBL.AddFeedback(feedbackModel, id);
+                if (result != null)
                 {
-                    return this.Ok(new { Success = true, message = result });
+                    return this.Ok(new { Success = true, message = "Add feadback  successfull", Response = result });
+
                 }
-                else
-                {
-                    return this.BadRequest(new { Success = false, message = result });
-                }
+                return this.BadRequest(new { Success = true, message = " adding Feadback failed", Response = result });
+
             }
-            catch (Exception e)
+            catch(Exception ex)
             {
-                throw e;
+
+                throw ex;
             }
         }
 
-        [HttpGet("Get Feedback")]
+        [Authorize]
+        [HttpGet("GetFeedback")]
         public ActionResult GetFeedback(int BookId)
         {
             try

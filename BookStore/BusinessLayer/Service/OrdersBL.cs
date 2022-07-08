@@ -16,12 +16,12 @@ namespace BusinessLayer.Service
             this.ordersRL = ordersRL;
         }
 
-        public string AddOrders(OrdersModel ordersModel)
+        public string AddOrders(OrdersModel ordersModel, int id)
         {
 
             try
             {
-                return this.ordersRL.AddOrders(ordersModel);
+                return this.ordersRL.AddOrders(ordersModel,id);
             }
             catch (Exception e)
             {

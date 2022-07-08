@@ -12,7 +12,7 @@ namespace RepositoryLayer.Service
     {
         string connetionString = "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=BookStore;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
 
-        public string AddBookToCart(CartModel cartModel)
+        public string AddBookToCart(CartModel cartModel ,int id)
         {
             using (SqlConnection con = new SqlConnection(connetionString))
                 try
@@ -21,7 +21,7 @@ namespace RepositoryLayer.Service
                 {
                     SqlCommand cmd = new SqlCommand("AddBookToCart", con);
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.AddWithValue("@Id", cartModel.Id);
+                    cmd.Parameters.AddWithValue("@Id", id);
                     cmd.Parameters.AddWithValue("@BookId", cartModel.BookId);
                     cmd.Parameters.AddWithValue("@OrderQuantity", cartModel.OrderQuantity);
                     con.Open();
@@ -104,7 +104,7 @@ namespace RepositoryLayer.Service
                             bookModel.OriginalPrice = Convert.ToInt32(dr["OriginalPrice"]);
                             bookModel.Description = dr["Description"].ToString();
                             //bookModel.Rating = Convert.ToDouble(dr["Rating"]);
-                            //bookModel.Image = dr["Image"].ToString();
+                            bookModel.Image = dr["Image"].ToString();
                             //bookModel.ReviewCount = Convert.ToInt32(dr["ReviewCount"]);
                             //bookModel.BookCount = Convert.ToInt32(dr["BookCount"]);
                             cartModel.CartId = Convert.ToInt32(dr["CartId"]);

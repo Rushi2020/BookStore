@@ -12,7 +12,7 @@ namespace RepositoryLayer.Service
     {
         string connetionString = "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=BookStore;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
 
-        public string AddAddress(AddressModel addressModel)
+        public string AddAddress(AddressModel addressModel, int id)
         {
             using (SqlConnection con = new SqlConnection(connetionString))
                 try
@@ -21,7 +21,7 @@ namespace RepositoryLayer.Service
                 {
                     SqlCommand cmd = new SqlCommand("AddAddress", con);
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.AddWithValue("@id", addressModel.id);
+                    cmd.Parameters.AddWithValue("@id", id);
                     cmd.Parameters.AddWithValue("@Address", addressModel.Address);
                     cmd.Parameters.AddWithValue("@City", addressModel.City);
                     cmd.Parameters.AddWithValue("@State", addressModel.State);

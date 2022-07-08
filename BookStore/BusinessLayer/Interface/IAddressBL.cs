@@ -7,7 +7,7 @@ namespace BusinessLayer.Interface
 {
     public interface IAddressBL
     {
-        string AddAddress(AddressModel addressModel);
+        string AddAddress(AddressModel addressModel, int id);
         string UpdateAddress(AddressModel addressModel);
         string DeleteAddress(int AddressId);
         List<AddressModel> GetAllAddress();

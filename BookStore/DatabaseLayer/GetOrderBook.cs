@@ -12,5 +12,7 @@ namespace DatabaseLayer
         public int DiscountPrice { get; set; }
         public int OriginalPrice { get; set; }
         public string Image { get; set; }
+        //public string OrderPlaced { get; set; }
+
     }
 }

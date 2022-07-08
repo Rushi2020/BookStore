@@ -13,7 +13,7 @@ namespace RepositoryLayer.Service
 
         string connetionString = "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=BookStore;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
 
-        public string AddOrders(OrdersModel ordersModel)
+        public string AddOrders(OrdersModel ordersModel, int id)
         {
             using (SqlConnection con = new SqlConnection(connetionString))
                 try
@@ -22,13 +22,13 @@ namespace RepositoryLayer.Service
                 {
                     SqlCommand cmd = new SqlCommand("AddOrders", con);
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.AddWithValue("@id", ordersModel.id);
+                    cmd.Parameters.AddWithValue("@id", id);
                     cmd.Parameters.AddWithValue("@AddressId", ordersModel.AddressId);
                     cmd.Parameters.AddWithValue("@BookId", ordersModel.BookId);
                     //cmd.Parameters.AddWithValue("@BookQuantity", ordersModel.BookQuantity);
                     con.Open();
                     var result = Convert.ToInt32(cmd.ExecuteScalar());
-                    if (result != 1)
+                    if (result != 2)
                     {
                         return "Success:- Ordered successfully";
                     }
@@ -100,7 +100,7 @@ namespace RepositoryLayer.Service
                             GetOrdersModel ordersModel = new GetOrdersModel();
                             GetOrderBook getOrderBook = new GetOrderBook();
                             ordersModel.OrdersId = Convert.ToInt32(dr["OrdersId"]);
-                            //ordersModel.OrderPlaced = dr["OrderPlaced"].ToString();
+                                //ordersModel.OrderPlaced = dr["OrderPlaced"].ToString();
                             getOrderBook.BookId = Convert.ToInt32(dr["BookId"]);
                             getOrderBook.BookName = dr["BookName"].ToString();
                             getOrderBook.AuthorName = dr["AuthorName"].ToString();

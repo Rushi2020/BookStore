@@ -41,7 +41,7 @@ namespace RepositoryLayer.Service
             }
         }
 
-        public string userLogin(LoginModel loginModel)
+        public string userLogin(LoginModel loginModel )
         {
             try
             {
@@ -56,10 +56,18 @@ namespace RepositoryLayer.Service
                     command.Parameters.AddWithValue("@Password", loginModel.Password);
                     con.Open();
 
-                    var data = command.ExecuteReader();
-                    if (data.HasRows)
+                    SqlDataReader rdr = command.ExecuteReader();
+                    if (rdr.HasRows)
                     {
-                        string token = GenerateJWTToken(loginModel.EmailId, usermodel.UserId);
+                        
+                        int UserId = 0;
+                        while (rdr.Read())
+                        {
+                            UserId = Convert.ToInt32(rdr["id"]);
+                        }
+                      
+                        string token = GenerateJWTToken(loginModel.EmailId, UserId);
+                        
                         return token;
                     }
                     else
@@ -82,10 +90,11 @@ namespace RepositoryLayer.Service
             {
                 Subject = new ClaimsIdentity(new Claim[]
                 {
+                    new Claim(ClaimTypes.Role , "User"),
                     new Claim("email", email),
                     new Claim("userId", UserId.ToString())
                 }),
-                Expires = DateTime.UtcNow.AddHours(1),
+                Expires = DateTime.UtcNow.AddHours(24),
                 SigningCredentials =
                 new SigningCredentials(
                     new SymmetricSecurityKey(tokenKey),
@@ -178,7 +187,7 @@ namespace RepositoryLayer.Service
                 {
                     new Claim("email", email)
                 }),
-                Expires = DateTime.UtcNow.AddHours(2),
+                Expires = DateTime.UtcNow.AddHours(20),
                 SigningCredentials =
                 new SigningCredentials(
                     new SymmetricSecurityKey(tokenKey),

@@ -1,8 +1,10 @@
 ﻿using BusinessLayer.Interface;
 using DatabaseLayer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Linq;
 
 namespace BookStore.Controllers
 {
@@ -17,12 +19,14 @@ namespace BookStore.Controllers
             this.addressBL = addressBL;
         }
 
-        [HttpPost("Add Address")]
+        [Authorize(Roles = Role.User)]
+        [HttpPost("AddAddress")]
         public ActionResult AddAddress(AddressModel addressModel)
         {
             try
             {
-                string result = this.addressBL.AddAddress(addressModel);
+                int id = Convert.ToInt32(User.Claims.FirstOrDefault(e => e.Type == "userId").Value);
+                string result = this.addressBL.AddAddress(addressModel, id);
                 if (result.Equals("Success:- Address added successfully"))
                 {
                     return this.Ok(new { success = true, message = result });

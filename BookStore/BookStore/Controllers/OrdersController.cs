@@ -1,8 +1,10 @@
 ﻿using BusinessLayer.Interface;
 using DatabaseLayer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Linq;
 
 namespace BookStore.Controllers
 {
@@ -17,12 +19,14 @@ namespace BookStore.Controllers
             this.ordersBL = ordersBL;
         }
 
+        [Authorize(Roles = Role.User)]
         [HttpPost("AddOrder")]
         public ActionResult AddOrders(OrdersModel ordersModel)
         {
             try
             {
-                string result = this.ordersBL.AddOrders(ordersModel);
+                int id = Convert.ToInt32(User.Claims.FirstOrDefault(e => e.Type == "userId").Value);
+                string result = this.ordersBL.AddOrders(ordersModel, id);
                 if (result.Equals("Success:- Ordered successfully"))
                 {
                     return this.Ok(new { success = true, message = result });
@@ -57,11 +61,15 @@ namespace BookStore.Controllers
                 throw e;
             }
         }
+
+        [Authorize(Roles = Role.User)]
         [HttpGet("GetAllOrders")]
-        public ActionResult GetAllOrders(int id)
+        public ActionResult GetAllOrders()
         {
             try
             {
+                int id = Convert.ToInt32(User.Claims.FirstOrDefault(e => e.Type == "userId").Value);
+
                 var result = this.ordersBL.GetAllOrders(id);
                 if (result != null)
                 {

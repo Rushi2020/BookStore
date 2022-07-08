@@ -12,7 +12,7 @@ namespace RepositoryLayer.Service
     {
         string connetionString = "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=BookStore;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
 
-        public string AddFeedback(FeedbackModel feedbackModel)
+        public string AddFeedback(FeedbackModel feedbackModel,int id)
         {
             using (SqlConnection con = new SqlConnection(connetionString))
                 try
@@ -20,7 +20,7 @@ namespace RepositoryLayer.Service
               
                     SqlCommand cmd = new SqlCommand("AddFeedback", con);
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.AddWithValue("@id", feedbackModel.id);
+                    cmd.Parameters.AddWithValue("@id", id);
                     cmd.Parameters.AddWithValue("@BookId", feedbackModel.BookId);
                     cmd.Parameters.AddWithValue("@Comments", feedbackModel.Comments);
                     cmd.Parameters.AddWithValue("@OverallRating", feedbackModel.OverallRating);

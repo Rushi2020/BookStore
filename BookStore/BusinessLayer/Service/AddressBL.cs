@@ -16,11 +16,11 @@ namespace BusinessLayer.Service
             this.addressRL = addressRL;
         }
 
-        public string AddAddress(AddressModel addressModel)
+        public string AddAddress(AddressModel addressModel, int id)
         {
             try
             {
-                return this.addressRL.AddAddress(addressModel);
+                return this.addressRL.AddAddress(addressModel,id);
             }
             catch (Exception e)
             {

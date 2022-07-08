@@ -1,4 +1,4 @@
-create procedure GetCart
+alter procedure GetCart
 (
  @id int
 )
@@ -11,6 +11,7 @@ begin
 	   CartTable.CartId,
 	   BookTable.BookName,
 	   BookTable.AuthorName,
+	   BookTable.Image,
 	   BookTable.DiscountPrice,
 	   BookTable.OriginalPrice,
 	   BookTable.Description

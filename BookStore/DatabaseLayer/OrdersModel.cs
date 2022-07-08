@@ -10,9 +10,10 @@ namespace DatabaseLayer
         public int id { get; set; }
         public int AddressId { get; set; }
         public int BookId { get; set; }
-        //public int DiscountPrice { get; set; }
+        public int DiscountPrice { get; set; }
+        public int originalPrice { get; set; }
         public int BookQuantity { get; set; }
         public DateTime Order_Date { get; set; }
-        public string OrderPlaced { get; set; }
+        //public string OrderPlaced { get; set; }
     }
 }

@@ -1,8 +1,10 @@
 ﻿using BusinessLayer.Interface;
 using DatabaseLayer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Linq;
 
 namespace BookStore.Controllers
 {
@@ -16,12 +18,14 @@ namespace BookStore.Controllers
             this.cartBL = cartBL;
         }
 
-        [HttpPost("Add Cart")]
+        [Authorize(Roles = Role.User)]
+        [HttpPost("AddCart")]
         public ActionResult AddBookToCart(CartModel cartModel)
         {
             try
             {
-                string result = this.cartBL.AddBookToCart(cartModel);
+                int id = Convert.ToInt32(User.Claims.FirstOrDefault(e => e.Type == "userId").Value);
+                string result = this.cartBL.AddBookToCart(cartModel, id);
                 if (result.Equals("Book added to cart successfully"))
                 {
                     return this.Ok(new { success = true, message = result });
@@ -79,12 +83,14 @@ namespace BookStore.Controllers
             }
         }
 
+        [Authorize(Roles = Role.User)]
         [HttpGet]
-        public ActionResult GetCartData(int Id)
+        public ActionResult GetCartData()
         {
             try
             {
-                var result = this.cartBL.GetCartData(Id);
+                int id = Convert.ToInt32(User.Claims.FirstOrDefault(e => e.Type == "userId").Value);
+                var result = this.cartBL.GetCartData(id);
                 if (result != null)
                 {
                     return this.Ok(new { success = true, message = "The Books in the cart are : ", response = result });

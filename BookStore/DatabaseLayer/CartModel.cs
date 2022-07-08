@@ -11,7 +11,7 @@ namespace DatabaseLayer
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int CartId { get; set; }
-        public int Id { get; set; }
+        //public int Id { get; set; }
         public int BookId { get; set; }
         public int OrderQuantity { get; set; }
     }

@@ -79,7 +79,7 @@ namespace BookStore.Controllers
             }
 
         }
-        [Authorize]
+       
         [HttpPut("BookUpdate")]
         public ActionResult updateBook(BookModel bookModel)
         {
@@ -93,7 +93,7 @@ namespace BookStore.Controllers
                 throw e;
             }
         }
-        [Authorize]
+        
         [HttpDelete("DeleteBook")]
         public ActionResult deleteBook(int? BookId)
         {
